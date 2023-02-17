@@ -5,10 +5,9 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.action_chains import ActionChains
-import getpass
-from datetime import date, time, datetime, timedelta
+from datetime import date, time, timedelta
 import time
+from obtener_datos_remito import remitos
 
 # INICIALIZANCO WEBDRIVER
 options = Options()
@@ -27,9 +26,6 @@ url = "https://xubio.com/NXV/newLogin"
 
 
 
-
-
-
 def abrir_pagina():
     driver.get(url)
 
@@ -38,26 +34,52 @@ def abrir_pagina():
 def nueva_venta():
     WebDriverWait(driver, 60).until(EC.presence_of_element_located((By.ID,"header")))
     driver.get("https://xubio.com/NXV/ventas/nuevo-comprobante-de-venta")
-    time.sleep(10)
+
+
+
+def seleccionar_de_dropdown():
+    dropdown = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.CLASS_NAME,"fafselector")))
 
 
 
 def cargar_datos():
+    a="abcd"
+    b="1234"
     fecha_factura = date.today()
     vencimiento_factura = fecha_factura + timedelta(25)
     
     contenedor_input_cliente = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Organizacion")))
     input_cliente = WebDriverWait(contenedor_input_cliente, 5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
+    input_cliente.send_keys("CENCOSUD")
+    dropdown_cliente = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.CLASS_NAME,"fafselector")))
+    cliente = WebDriverWait(dropdown_cliente,5).until(EC.presence_of_element_located((By.TAG_NAME,"tr")))
+    cliente.click()
+
+    boton_mas_opciones = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.NAME,"wdg_MasOpciones")))
+    boton_mas_opciones.click()
+    time.sleep(4)    
     
-    time.sleep(10)
+    contenedor_input_vendedor = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Vendedor")))
+    input_vendedor = WebDriverWait(contenedor_input_vendedor,5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
+    input_vendedor.send_keys("Easy")
+    dropdown_vendedor = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.CLASS_NAME,"dataPanel")))
+    vendedor = WebDriverWait(dropdown_vendedor,5).until(EC.presence_of_element_located((By.TAG_NAME,"tr")))
+    vendedor.click()
     
-    # mas_opciones = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,"")))
+    contenedor_input_comision = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_PorcentajeComision")))
+    input_comision = WebDriverWait(contenedor_input_comision,5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
+    input_comision.clear()
+    input_comision.send_keys("10")
     
-    # input_vendedor = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,"")))
+    input_observaciones = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Descripcion")))
+    input_observaciones.send_keys(
+        f"OC ${a}\nRE{b}"
+        )
     
-    # input_comision = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,"")))
-    
-    # input_observaciones = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID,"")))
+    time.sleep(3600)
+
+
+
 
 
 
