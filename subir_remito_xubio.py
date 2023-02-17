@@ -5,7 +5,6 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from datetime import date, time, timedelta
 import time
 from obtener_datos_remito import remitos
 
@@ -42,12 +41,7 @@ def seleccionar_de_dropdown():
 
 
 
-def cargar_datos():
-    a="abcd"
-    b="1234"
-    fecha_factura = date.today()
-    vencimiento_factura = fecha_factura + timedelta(25)
-    
+def completar_cliente():    
     contenedor_input_cliente = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Organizacion")))
     input_cliente = WebDriverWait(contenedor_input_cliente, 5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
     input_cliente.send_keys("CENCOSUD")
@@ -55,32 +49,48 @@ def cargar_datos():
     cliente = WebDriverWait(dropdown_cliente,5).until(EC.presence_of_element_located((By.TAG_NAME,"tr")))
     cliente.click()
 
+
+
+def abrir_mas_opciones():
     boton_mas_opciones = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.NAME,"wdg_MasOpciones")))
     boton_mas_opciones.click()
-    time.sleep(4)    
-    
+
+
+
+def completar_vendedor():    
     contenedor_input_vendedor = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Vendedor")))
     input_vendedor = WebDriverWait(contenedor_input_vendedor,5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
     input_vendedor.send_keys("Easy")
     dropdown_vendedor = WebDriverWait(driver,5).until(EC.presence_of_element_located((By.CLASS_NAME,"dataPanel")))
     vendedor = WebDriverWait(dropdown_vendedor,5).until(EC.presence_of_element_located((By.TAG_NAME,"tr")))
     vendedor.click()
-    
+
+
+
+def completar_comision():    
     contenedor_input_comision = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_PorcentajeComision")))
     input_comision = WebDriverWait(contenedor_input_comision,5).until(EC.presence_of_element_located((By.TAG_NAME,"input")))
     input_comision.clear()
     input_comision.send_keys("10")
-    
+
+
+
+def completar_observaciones():
+    a="abcd"
+    b="1234"
     input_observaciones = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME,"wdg_Descripcion")))
     input_observaciones.send_keys(
         f"OC ${a}\nRE{b}"
         )
-    
-    time.sleep(3600)
 
 
 
-
+def cargar_datos():
+    completar_cliente()
+    abrir_mas_opciones()
+    completar_vendedor()
+    completar_comision()
+    completar_observaciones()
 
 
 
